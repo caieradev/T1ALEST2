@@ -1,19 +1,21 @@
 import java.io.IOException;
-import java.security.Timestamp;
 import java.util.List;
 
 import Entities.MacacoEntity;
+import Services.MacacoService;
 
 public class App {
     public static void main(String[] args) throws IOException {
-        String fileName = "caso08.txt"; // replace with your file name
+        String fileName = "caso08.txt";
 
-        long start = System.currentTimeMillis();
+        var service = new MacacoService(fileName);
 
-        List<MacacoEntity> macacos = new MacacoParser().parseFile(fileName);
+        long rodadas = service.persistMacacos();
 
-        long time = System.currentTimeMillis() - start;
+        if (rodadas == -1)
+            System.err.println("Ocorreu um erro ao ler o arquivo");
+        else
+            System.out.println(rodadas);
 
-        System.out.println(time);
     }
 }
