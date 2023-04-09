@@ -1,11 +1,11 @@
 package Entities;
 
-import java.util.Queue;
+import java.util.LinkedList;
 
 public class MacacoEntity
 {
     private int id;
-    private Queue<Integer> cocos;
+    private LinkedList<CocoEntity> cocos = new LinkedList<>();
     private int sendEven;
     private int sendOdd;
 
@@ -17,11 +17,11 @@ public class MacacoEntity
         this.id = id;
     }
 
-    public Queue<Integer> getCocos() {
+    public LinkedList<CocoEntity> getCocos() {
         return cocos;
     }
 
-    public void setCocos(Queue<Integer> cocos) {
+    public void setCocos(LinkedList<CocoEntity> cocos) {
         this.cocos = cocos;
     }
 

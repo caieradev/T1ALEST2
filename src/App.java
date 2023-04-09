@@ -1,21 +1,25 @@
-import java.io.IOException;
-import java.util.List;
-
-import Entities.MacacoEntity;
 import Services.MacacoService;
 
 public class App {
-    public static void main(String[] args) throws IOException {
-        String fileName = "caso08.txt";
-
-        var service = new MacacoService(fileName);
-
-        long rodadas = service.persistMacacos();
-
-        if (rodadas == -1)
-            System.err.println("Ocorreu um erro ao ler o arquivo");
-        else
-            System.out.println(rodadas);
-
+    public static void main(String[] args) throws Exception {
+        for (int i = 0; i < 9; i++)
+        {
+            long start = System.currentTimeMillis();
+            
+            String fileName = "caso0" + i + ".txt";
+    
+            var service = new MacacoService(fileName);
+    
+            long rodadas = service.persistMacacos();
+    
+            long winner = service.perform(rodadas);
+    
+            long finishtime = System.currentTimeMillis() - start;
+    
+            System.out.print(fileName);
+            System.out.println(":\n\nO vencedor foi o macaco " + winner);
+            
+            System.out.println("\nDuração da execução: " + (double)(finishtime / 1000) + "s\n\n---------------\n");
+        }
     }
 }

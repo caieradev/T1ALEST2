@@ -3,20 +3,21 @@ package Services;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import Entities.CocoEntity;
 import Entities.MacacoEntity;
 
 public class MacacoService {
-    private LinkedList<MacacoEntity> macacos;
+    private HashMap<Integer, MacacoEntity> macacos;
     private String fileName;
 
     public MacacoService(String fileName) {
         this.fileName = fileName;
-        this.macacos = new LinkedList<MacacoEntity>();
+        this.macacos = new HashMap<Integer, MacacoEntity>();
     }
 
     public long persistMacacos() throws IOException {
@@ -61,17 +62,52 @@ public class MacacoService {
 
             tokenizer.nextToken();
 
-            Queue<Integer> cocos = new LinkedList<>();
+            LinkedList<CocoEntity> cocos = new LinkedList<>();
             for (int i = 0; i < numCocos; i++) {
-                cocos.offer(Integer.parseInt(tokenizer.nextToken()));
+                cocos.add(new CocoEntity(Integer.parseInt(tokenizer.nextToken())));
             }
             macaco.setCocos(cocos);
 
-            macacos.add(macaco);
+            macacos.put(id, macaco);
         }
 
         scanner.close();
 
         return rodadas;
+    }
+
+    public long perform(long rodadas) throws Exception {
+        MacacoEntity winner = new MacacoEntity();
+
+        for (int i = 0; i < rodadas; i++)
+        {
+            for (var macaco : macacos.values())
+            {
+                var oddCocos = new LinkedList<CocoEntity>();
+                var evenCocos = new LinkedList<CocoEntity>();
+                
+                macaco.getCocos()
+                    .stream()
+                    .forEach(x -> {
+                        if (x.isEven())
+                            oddCocos.add(x);
+                        else
+                            evenCocos.add(x);
+                    });
+                
+                macaco.setCocos(new LinkedList<CocoEntity>());
+                
+                macacos.get(macaco.getSendOdd()).getCocos().addAll(oddCocos);
+                macacos.get(macaco.getSendEven()).getCocos().addAll(evenCocos);
+            }
+        }
+
+        for (var macaco : macacos.values())
+        {
+            if (macaco == null || (macaco.getCocos().size() > winner.getCocos().size()))
+                winner = macaco;
+        }
+
+        return winner.getId();
     }
 }
