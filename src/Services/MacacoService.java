@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -11,6 +12,8 @@ import Entities.MacacoEntity;
 
 public class MacacoService {
     private HashMap<Integer, MacacoEntity> macacos;
+    private Map<Integer, Integer> evenReceivers = new HashMap<>();
+    private Map<Integer, Integer> oddReceivers = new HashMap<>();
     private String fileName;
     private long rodadas;
 
@@ -22,21 +25,29 @@ public class MacacoService {
     public long perform() throws Exception {
         this.persistMacacos();
         MacacoEntity winner = null;
-
+    
+        // Perform the cocos transfer directly between corresponding Macacos
         for (int i = 0; i < rodadas; i++) {
             for (var macaco : macacos.values()) {
-                macacos.get(macaco.getSendOdd()).addAllEvenCocos(macaco.getEvenCocos());
-                macacos.get(macaco.getSendEven()).addAllOddCocos(macaco.getOddCocos());
+                if (macaco.getSendEven() != 0) {
+                    MacacoEntity receiver = macacos.get(evenReceivers.get(macaco.getId()));
+                    receiver.addAllEvenCocos(macaco.getEvenCocos());
+                }
+                if (macaco.getSendOdd() != 0) {
+                    MacacoEntity receiver = macacos.get(oddReceivers.get(macaco.getId()));
+                    receiver.addAllOddCocos(macaco.getOddCocos());
+                }
                 macaco.removeAllCocos();
             }
         }
-
+    
+        // Find the Macaco with the most cocos
         for (var macaco : macacos.values()) {
             if (winner == null || (macaco.size() > winner.size())) {
                 winner = macaco;
             }
         }
-
+    
         return winner.getId();
     }
 
@@ -89,5 +100,11 @@ public class MacacoService {
         }
 
         scanner.close();
+    
+        // Create a map between Macaco IDs and their even and odd receiving partners
+        for (var macaco : macacos.values()) {
+            evenReceivers.put(macaco.getId(), macaco.getSendEven());
+            oddReceivers.put(macaco.getId(), macaco.getSendOdd());
+        }
     }
 }
