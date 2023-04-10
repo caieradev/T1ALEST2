@@ -1,5 +1,6 @@
 package Services;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,7 +53,7 @@ public class MacacoService {
     }
 
     private void persistMacacos() throws IOException {
-        Path path = Paths.get(fileName);
+        Path path = Paths.get("assets" + System.getProperty("file.separator") + fileName);
         Scanner scanner = new Scanner(path);
 
         while (scanner.hasNextLine()) {
