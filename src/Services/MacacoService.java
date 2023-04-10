@@ -12,31 +12,48 @@ import Entities.MacacoEntity;
 public class MacacoService {
     private HashMap<Integer, MacacoEntity> macacos;
     private String fileName;
+    private long rodadas;
 
     public MacacoService(String fileName) {
         this.fileName = fileName;
-        this.macacos = new HashMap<Integer, MacacoEntity>();
+        this.macacos = new HashMap<>();
     }
 
-    public long persistMacacos() throws IOException {
+    public long perform() throws Exception {
+        this.persistMacacos();
+        MacacoEntity winner = null;
+
+        for (int i = 0; i < rodadas; i++) {
+            for (var macaco : macacos.values()) {
+                macacos.get(macaco.getSendOdd()).addAllEvenCocos(macaco.getEvenCocos());
+                macacos.get(macaco.getSendEven()).addAllOddCocos(macaco.getOddCocos());
+                macaco.removeAllCocos();
+            }
+        }
+
+        for (var macaco : macacos.values()) {
+            if (winner == null || (macaco.size() > winner.size())) {
+                winner = macaco;
+            }
+        }
+
+        return winner.getId();
+    }
+
+    private void persistMacacos() throws IOException {
         Path path = Paths.get(fileName);
         Scanner scanner = new Scanner(path);
-        long rodadas = -1;
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
 
-            if (line.charAt(0) == 'F')
-            {
+            if (line.charAt(0) == 'F') {
                 rodadas = Long.parseLong(line.split(" ")[1]);
-                
-                if (rodadas == 0)
-                {
-                    do
-                    {
+
+                if (rodadas == 0) {
+                    do {
                         line = scanner.nextLine();
-                    }
-                    while (scanner.hasNextLine() && line.charAt(0) != 'F');
+                    } while (scanner.hasNextLine() && line.charAt(0) != 'F');
                 }
                 continue;
             }
@@ -71,33 +88,5 @@ public class MacacoService {
         }
 
         scanner.close();
-
-        return rodadas;
-    }
-
-    public long perform(long rodadas) throws Exception {
-        MacacoEntity winner = new MacacoEntity();
-
-        for (int i = 0; i < rodadas; i++)
-        {
-            for (var macaco : macacos.values())
-            {                
-                macacos.get(macaco.getSendOdd())
-                    .addAllEvenCocos(macaco.getEvenCocos());
-
-                macacos.get(macaco.getSendEven())
-                    .addAllOddCocos(macaco.getOddCocos());
-                
-                macaco.removeAllCocos();
-            }
-        }
-
-        for (var macaco : macacos.values())
-        {
-            if (macaco == null || (macaco.size() > winner.size()))
-                winner = macaco;
-        }
-
-        return winner.getId();
     }
 }
