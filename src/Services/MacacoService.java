@@ -78,10 +78,11 @@ public class MacacoService {
             tokenizer.nextToken();
 
             for (int i = 0; i < numCocos; i++) {
-                if (!((numCocos & 1) == 1))
-                    macaco.addEvenCocos(numCocos);
-                else
-                    macaco.addOddCocos(numCocos);
+                if (i % 2 == 0) {
+                    macaco.addEvenCocos(i);
+                } else {
+                    macaco.addOddCocos(i);
+                }
             }
 
             macacos.put(id, macaco);

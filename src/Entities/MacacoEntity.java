@@ -1,12 +1,12 @@
 package Entities;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class MacacoEntity
 {
     private int id;
-    private LinkedList<Integer> oddCocos = new LinkedList<>();
-    private LinkedList<Integer> evenCocos = new LinkedList<>();
+    private ArrayList<Integer> oddCocos = new ArrayList<>();
+    private ArrayList<Integer> evenCocos = new ArrayList<>();
     private int sendEven;
     private int sendOdd;
 
@@ -22,7 +22,7 @@ public class MacacoEntity
         this.id = id;
     }
 
-    public LinkedList<Integer> getOddCocos() {
+    public ArrayList<Integer> getOddCocos() {
         return oddCocos;
     }
 
@@ -31,11 +31,11 @@ public class MacacoEntity
         this.evenCocos.clear();
     }
 
-    public void addAllOddCocos(LinkedList<Integer> oddCocos) {
+    public void addAllOddCocos(ArrayList<Integer> oddCocos) {
         this.oddCocos.addAll(oddCocos);
     }
 
-    public void addAllEvenCocos(LinkedList<Integer> evenCocos) {
+    public void addAllEvenCocos(ArrayList<Integer> evenCocos) {
         this.evenCocos.addAll(evenCocos);
     }
 
@@ -47,7 +47,7 @@ public class MacacoEntity
         this.evenCocos.add(evenCocos);
     }
 
-    public LinkedList<Integer> getEvenCocos() {
+    public ArrayList<Integer> getEvenCocos() {
         return evenCocos;
     }
 
