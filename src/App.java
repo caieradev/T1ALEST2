@@ -1,4 +1,4 @@
-import Services.MacacoService;
+import Services.MonkeyService;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -7,7 +7,7 @@ public class App {
 
             String fileName = "caso0" + i + ".txt";
 
-            var service = new MacacoService(fileName);
+            var service = new MonkeyService(fileName);
 
             long winner = service.perform();
 

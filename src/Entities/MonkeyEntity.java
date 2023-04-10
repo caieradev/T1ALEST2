@@ -1,6 +1,6 @@
 package Entities;
 
-public class MacacoEntity
+public class MonkeyEntity
 {
     private int id;
     private int even;
