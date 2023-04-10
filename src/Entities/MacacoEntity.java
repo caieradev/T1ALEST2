@@ -1,12 +1,10 @@
 package Entities;
 
-import java.util.ArrayList;
-
 public class MacacoEntity
 {
     private int id;
-    private ArrayList<Integer> oddCocos = new ArrayList<>();
-    private ArrayList<Integer> evenCocos = new ArrayList<>();
+    private int even;
+    private int odd;
     private int sendEven;
     private int sendOdd;
 
@@ -15,40 +13,40 @@ public class MacacoEntity
     }
 
     public int size(){
-        return oddCocos.size() + evenCocos.size();
+        return even + odd;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public ArrayList<Integer> getOddCocos() {
-        return oddCocos;
+    public int getOddCocos() {
+        return odd;
     }
 
     public void removeAllCocos(){
-        this.oddCocos.clear();
-        this.evenCocos.clear();
+        this.odd = 0;
+        this.even = 0;
     }
 
-    public void addAllOddCocos(ArrayList<Integer> oddCocos) {
-        this.oddCocos.addAll(oddCocos);
+    public void sumOddCocos(int oddCocos) {
+        this.odd += oddCocos;
     }
 
-    public void addAllEvenCocos(ArrayList<Integer> evenCocos) {
-        this.evenCocos.addAll(evenCocos);
+    public void sumEvenCocos(int evenCocos) {
+        this.even += evenCocos;
     }
 
-    public void addOddCocos(int oddCocos) {
-        this.oddCocos.add(oddCocos);
+    public void addOddCocos() {
+        this.odd++;
     }
 
-    public void addEvenCocos(int evenCocos) {
-        this.evenCocos.add(evenCocos);
+    public void addEvenCocos() {
+        this.even++;
     }
 
-    public ArrayList<Integer> getEvenCocos() {
-        return evenCocos;
+    public int getEvenCocos() {
+        return even;
     }
 
     public int getSendEven() {
