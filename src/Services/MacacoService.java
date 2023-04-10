@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import Entities.CocoEntity;
 import Entities.MacacoEntity;
 
 public class MacacoService {
@@ -62,11 +60,12 @@ public class MacacoService {
 
             tokenizer.nextToken();
 
-            LinkedList<CocoEntity> cocos = new LinkedList<>();
             for (int i = 0; i < numCocos; i++) {
-                cocos.add(new CocoEntity(Integer.parseInt(tokenizer.nextToken())));
+                if (!((numCocos & 1) == 1))
+                    macaco.addEvenCocos(numCocos);
+                else
+                    macaco.addOddCocos(numCocos);
             }
-            macaco.setCocos(cocos);
 
             macacos.put(id, macaco);
         }
@@ -82,29 +81,20 @@ public class MacacoService {
         for (int i = 0; i < rodadas; i++)
         {
             for (var macaco : macacos.values())
-            {
-                var oddCocos = new LinkedList<CocoEntity>();
-                var evenCocos = new LinkedList<CocoEntity>();
+            {                
+                macacos.get(macaco.getSendOdd())
+                    .addAllEvenCocos(macaco.getEvenCocos());
+
+                macacos.get(macaco.getSendEven())
+                    .addAllOddCocos(macaco.getOddCocos());
                 
-                macaco.getCocos()
-                    .stream()
-                    .forEach(x -> {
-                        if (x.isEven())
-                            oddCocos.add(x);
-                        else
-                            evenCocos.add(x);
-                    });
-                
-                macaco.setCocos(new LinkedList<CocoEntity>());
-                
-                macacos.get(macaco.getSendOdd()).getCocos().addAll(oddCocos);
-                macacos.get(macaco.getSendEven()).getCocos().addAll(evenCocos);
+                macaco.removeAllCocos();
             }
         }
 
         for (var macaco : macacos.values())
         {
-            if (macaco == null || (macaco.getCocos().size() > winner.getCocos().size()))
+            if (macaco == null || (macaco.size() > winner.size()))
                 winner = macaco;
         }
 

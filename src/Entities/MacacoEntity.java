@@ -5,7 +5,8 @@ import java.util.LinkedList;
 public class MacacoEntity
 {
     private int id;
-    private LinkedList<CocoEntity> cocos = new LinkedList<>();
+    private LinkedList<Integer> oddCocos = new LinkedList<>();
+    private LinkedList<Integer> evenCocos = new LinkedList<>();
     private int sendEven;
     private int sendOdd;
 
@@ -13,16 +14,41 @@ public class MacacoEntity
         return id;
     }
 
+    public int size(){
+        return oddCocos.size() + evenCocos.size();
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public LinkedList<CocoEntity> getCocos() {
-        return cocos;
+    public LinkedList<Integer> getOddCocos() {
+        return oddCocos;
     }
 
-    public void setCocos(LinkedList<CocoEntity> cocos) {
-        this.cocos = cocos;
+    public void removeAllCocos(){
+        this.oddCocos.clear();
+        this.evenCocos.clear();
+    }
+
+    public void addAllOddCocos(LinkedList<Integer> oddCocos) {
+        this.oddCocos.addAll(oddCocos);
+    }
+
+    public void addAllEvenCocos(LinkedList<Integer> evenCocos) {
+        this.evenCocos.addAll(evenCocos);
+    }
+
+    public void addOddCocos(int oddCocos) {
+        this.oddCocos.add(oddCocos);
+    }
+
+    public void addEvenCocos(int evenCocos) {
+        this.evenCocos.add(evenCocos);
+    }
+
+    public LinkedList<Integer> getEvenCocos() {
+        return evenCocos;
     }
 
     public int getSendEven() {
